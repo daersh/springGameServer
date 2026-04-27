@@ -1,6 +1,7 @@
 package com.zizonhyunwoo.springgameserver.webSocket.handler;
 
 import com.zizonhyunwoo.springgameserver.webSocket.dto.GameMessageDto;
+import com.zizonhyunwoo.springgameserver.webSocket.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,20 +24,24 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
 
     private final ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
+    private final GameService gameService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("Connected to web socket session: {}", session.getId());
         sessions.add(session);
-
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(
+            WebSocketSession session,
+            TextMessage message
+    )
+    {
         String payload = message.getPayload();
         GameMessageDto gameMessageDto = objectMapper.readValue(payload, GameMessageDto.class);
-        log.info("Received message: {}", gameMessageDto);
 
+        gameService.handleRequest(gameMessageDto);
         for (WebSocketSession s : sessions) {
             if(s.isOpen() && !s.getId().equals(session.getId())) {
                 virtualThreadExecutor.submit(() -> {
