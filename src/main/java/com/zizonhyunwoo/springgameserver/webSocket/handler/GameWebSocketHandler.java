@@ -11,6 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -21,15 +22,15 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class GameWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-    private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
+    private final Map<String,Set<WebSocketSession>> sessions = new ConcurrentHashMap<>();
 
     private final ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
     private final GameService gameService;
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session)  {
         log.info("Connected to web socket session: {}", session.getId());
-        sessions.add(session);
+        sessions.put(session);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)  {
         log.info("Disconnected from web socket session: {}", session.getId());
         sessions.remove(session);
     }
