@@ -37,3 +37,4 @@ out/
 .vscode/
 docker-compose.yml
 src/main/resources/application-local.yaml
+/jdk-26.0.1/
