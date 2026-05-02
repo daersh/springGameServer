@@ -19,6 +19,7 @@ public class JwtUserInfo {
     private String role;
 
     public JwtUserInfo(Claims parse) {
+
         this.userId = UUID.fromString(parse.get("userId", String.class));
         this.email = parse.get("email", String.class);
         this.nickname = parse.get("nickname", String.class);
