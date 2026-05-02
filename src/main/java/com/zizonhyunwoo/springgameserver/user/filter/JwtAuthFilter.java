@@ -27,12 +27,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException
     {
         String accessToken = getToken(request);
-
+        System.out.println("access: "+accessToken);
         if (accessToken!=null && jwtUtil.validate(accessToken)) {
             try {
                 Authentication auth = jwtUtil.getAuth(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }catch (Exception e) {
+                e.printStackTrace();
                 SecurityContextHolder.clearContext();
             }
         }

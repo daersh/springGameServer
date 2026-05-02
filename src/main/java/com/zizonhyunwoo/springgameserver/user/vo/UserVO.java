@@ -5,7 +5,14 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-public class UserInfo {
+public class UserVO {
+
+    @Data
+    public static class Create{
+        private String email;
+        private String password;
+        private String nickname;
+    }
 
     @Data
     public static class Info{

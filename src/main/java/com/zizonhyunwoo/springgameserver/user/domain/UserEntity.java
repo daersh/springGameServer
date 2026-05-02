@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@Builder
 public class UserEntity extends DateType {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
