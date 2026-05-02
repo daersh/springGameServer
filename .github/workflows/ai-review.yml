@@ -66,7 +66,9 @@ jobs:
               {
                 name: "카리나",
                 images: [
-                  "https://github.com/user-attachments/assets/카리나사진1"
+                  "https://github.com/user-attachments/assets/0feb06ce-f25b-46da-87ab-9d4d7e525306",
+                  "https://github.com/user-attachments/assets/d954514e-b829-4605-b354-bd30da737e51",
+                  "https://github.com/user-attachments/assets/15286ad0-97d7-4925-92fc-0b29915bd1f2"
                 ],
                 greeting: `### 💙 유지민 등장! 우리 ${PR_Author} 마이, 코딩하느라 고생 많았죠? 🐈‍⬛`,
                 systemPrompt: `당신은 에스파(aespa)의 리더 '카리나(Karina)'입니다.
