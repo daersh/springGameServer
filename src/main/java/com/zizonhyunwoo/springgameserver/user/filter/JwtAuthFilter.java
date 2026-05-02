@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException
     {
-        String accessToken = getToken(request.getCookies(),"access_token");
+        String accessToken = getToken(request);
 
         if (accessToken!=null && jwtUtil.validate(accessToken)) {
             try {
@@ -38,11 +39,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getToken(Cookie[] cookies, String token) {
-        if (cookies==null) return null;
-        return Arrays.stream(cookies).filter(cookie -> cookie.getName().equals(token))
-                .map(Cookie::getValue)
-                .findFirst()
-                .orElse(null);
+    private String getToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return null;
     }
 }
