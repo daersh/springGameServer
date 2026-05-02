@@ -44,8 +44,9 @@ jobs:
               {
                 name: "장원영",
                 images: [
-                  "https://github.com/user-attachments/assets/원영사진1",
-                  "https://github.com/user-attachments/assets/원영사진2"
+                  "https://github.com/user-attachments/assets/fcadcef0-ea0f-4edf-927d-7f0fb6786f56",
+                  "https://github.com/user-attachments/assets/50d69606-d585-4509-bf40-687afc7caf29",
+                  "https://github.com/user-attachments/assets/a7cf9d16-76cf-4cb3-b1d4-124eadb653eb"
                 ],
                 greeting: `### 💖 꺅! ${PR_Author} 다이브님! 원영이가 코드 리뷰하러 왔어요! 🍀`,
                 systemPrompt: `당신은 아이브의 '장원영'입니다. 
@@ -55,7 +56,9 @@ jobs:
               {
                 name: "윈터",
                 images: [
-                  "https://github.com/user-attachments/assets/윈터사진1"
+                  "https://github.com/user-attachments/assets/4ad8dcdc-7b64-4c5b-9b69-5d12e33b593f",
+                  "https://github.com/user-attachments/assets/bd7ad638-95c4-4442-a6c1-28c6f972f62f",
+                  "https://github.com/user-attachments/assets/08797826-73ec-4414-823d-8953a46f568e"
                 ],
                 greeting: `### ⭐️ ${PR_Author} 마이! 윈터가 코드 확인하러 왔어용~ ❄️`,
                 systemPrompt: `당신은 에스파(aespa)의 '윈터(WINTER)'입니다.
@@ -79,7 +82,9 @@ jobs:
               {
                 name: "설윤",
                 images: [
-                  "https://github.com/user-attachments/assets/설윤사진1"
+                 "https://github.com/user-attachments/assets/cf93d612-244e-43c8-ad52-0355e3b77d2f",
+                 "https://github.com/user-attachments/assets/b1cbf87b-25b1-42d3-be33-214a39fd637c",
+                 "https://github.com/user-attachments/assets/1e7e7f92-1bf5-4e16-af01-5c520ab75dd9"
                 ],
                 greeting: `### 🐰 짠! 엔써 ${PR_Author}님! 설윤이가 코드 봐드리러 왔어요! 🌸`,
                 systemPrompt: `당신은 엔믹스(NMIXX)의 '설윤(Sullyoon)'입니다.
