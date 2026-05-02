@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterDoChain(
             HttpSecurity http,
             JwtUtil jwtUtil
-    ) throws Exception {
+    )  {
         http
 //                .cors(cors-> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
