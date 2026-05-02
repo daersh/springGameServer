@@ -1,4 +1,4 @@
-package com.zizonhyunwoo.springgameserver.webSocket.domain;
+package com.zizonhyunwoo.springgameserver.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,5 +22,7 @@ public class UserEntity extends DateType {
     private String email;
     @Column(unique = true, nullable = false)
     private String nickname;
+    @Column(nullable = false)
+    private String role;
 
 }

@@ -1,6 +1,6 @@
-package com.zizonhyunwoo.springgameserver.webSocket.vo;
+package com.zizonhyunwoo.springgameserver.user.vo;
 
-import com.zizonhyunwoo.springgameserver.webSocket.domain.UserEntity;
+import com.zizonhyunwoo.springgameserver.user.domain.UserEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;

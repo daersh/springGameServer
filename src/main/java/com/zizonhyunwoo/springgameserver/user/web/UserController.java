@@ -1,8 +1,8 @@
-package com.zizonhyunwoo.springgameserver.webSocket.web;
+package com.zizonhyunwoo.springgameserver.user.web;
 
-import com.zizonhyunwoo.springgameserver.webSocket.dao.UserDao;
-import com.zizonhyunwoo.springgameserver.webSocket.domain.UserEntity;
-import com.zizonhyunwoo.springgameserver.webSocket.vo.UserInfo;
+import com.zizonhyunwoo.springgameserver.user.dao.UserDao;
+import com.zizonhyunwoo.springgameserver.user.domain.UserEntity;
+import com.zizonhyunwoo.springgameserver.user.vo.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

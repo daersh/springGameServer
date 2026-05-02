@@ -1,4 +1,4 @@
-package com.zizonhyunwoo.springgameserver.webSocket.domain;
+package com.zizonhyunwoo.springgameserver.user.domain;
 
 
 import jakarta.persistence.Column;
