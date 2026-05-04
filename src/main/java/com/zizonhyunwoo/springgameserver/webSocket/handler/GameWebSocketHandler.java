@@ -1,6 +1,7 @@
 package com.zizonhyunwoo.springgameserver.webSocket.handler;
 
-import com.zizonhyunwoo.springgameserver.webSocket.dto.GameMessageDto;
+import com.zizonhyunwoo.springgameserver.webSocket.dto.GameMessage;
+import com.zizonhyunwoo.springgameserver.webSocket.dto.IGameMessage;
 import com.zizonhyunwoo.springgameserver.webSocket.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,17 +48,38 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                 // 가공
                 String payload = message.getPayload();
                 log.info("Received text message: {}", payload);
-                GameMessageDto gameMessageDto = objectMapper.readValue(message.getPayload(), GameMessageDto.class);
-                String roomId = gameMessageDto.roomId();
+                IGameMessage gameMessage = objectMapper.readValue(message.getPayload(), IGameMessage.class);
+                String roomId = gameMessage.roomId();
+
+                switch (gameMessage){
+                    case GameMessage.Enter enter-> {
+
+                    }
+                    case GameMessage.Leave leave-> {
+
+                    }
+                    case GameMessage.Attack attack->{
+
+                    }
+                    case GameMessage.Chat chat->{
+
+                    }
+                    case GameMessage.Move move-> {
+
+                    }
+                    default -> {
+
+                    }
+                }
                 // 세션 정보 확인
-                if (gameMessageDto.type() == GameMessageDto.MessageType.ENTER) {
+                if (gameMessage.messageType() == IGameMessage.MessageType.ENTER) {
                     WebSocketSession safeSession = (WebSocketSession) session.getAttributes().get("safeSession");
                     roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(safeSession);
                     session.getAttributes().put("roomId", roomId);
-                    session.getAttributes().put("playerId", gameMessageDto.playerId());
+                    session.getAttributes().put("playerId", gameMessage.playerId());
                 }
                 // 비즈니스 로직 수행
-                gameService.handleRequest(gameMessageDto);
+                gameService.handleRequest(gameMessage);
                 // 전파
                 Set<WebSocketSession> room = roomSessions.get(roomId);
                 if (room == null) return;
@@ -66,6 +88,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                         System.out.println("Sending text message");
                         s.sendMessage(new TextMessage(payload));
                     }
+
             }catch (InvalidFormatException e){
                 log.warn("Invalid message received: {}", e.getMessage());
             }
@@ -87,12 +110,10 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                 if (safeSession != null) roomSessions.get(roomId).remove(safeSession);
                 if (roomSessions.get(roomId).isEmpty()) roomSessions.remove(roomId);
                 else if (playerId != null) {
-                    GameMessageDto leaveMessage = new GameMessageDto(
-                            GameMessageDto.MessageType.LEAVE,
+                    GameMessage.Leave leaveMessage = new GameMessage.Leave(
+                            IGameMessage.MessageType.LEAVE,
                             roomId,
-                            playerId,
-                            0.0, 0.0, 0.0,
-                            ""
+                            playerId
                     );
 
                     String leavePayload = objectMapper.writeValueAsString(leaveMessage);

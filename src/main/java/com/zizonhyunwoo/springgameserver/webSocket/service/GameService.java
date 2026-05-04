@@ -1,6 +1,7 @@
 package com.zizonhyunwoo.springgameserver.webSocket.service;
 
-import com.zizonhyunwoo.springgameserver.webSocket.dto.GameMessageDto;
+import com.zizonhyunwoo.springgameserver.webSocket.dto.GameMessage;
+import com.zizonhyunwoo.springgameserver.webSocket.dto.IGameMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,9 @@ import org.springframework.stereotype.Service;
 public class GameService {
 
     public void handleRequest(
-        GameMessageDto req
+        IGameMessage req
     ) {
-        switch (req.type()){
+        switch (req.messageType()){
             case ATTACK -> handleAttack(req);
             case MOVE -> handleMove(req);
             case ENTER ->  handleEnter(req);
@@ -21,26 +22,26 @@ public class GameService {
         }
     }
 
-    private void handleLeave(GameMessageDto req) {
+    private void handleLeave(IGameMessage req) {
         log.info("Leaving game: {}", req);
     }
 
-    private void handleChat(GameMessageDto req) {
+    private void handleChat(IGameMessage req) {
         log.info("Chat game: {}",req);
 
     }
 
-    private void handleEnter(GameMessageDto req){
+    private void handleEnter(IGameMessage req){
         log.info("Enter game: {}",req);
 
     }
 
-    private void handleMove(GameMessageDto req){
+    private void handleMove(IGameMessage req){
         log.info("Move game: {}",req);
 
     }
 
-    private void handleAttack(GameMessageDto req){
+    private void handleAttack(IGameMessage req){
         log.info("Attack {}",req);
 
     }
