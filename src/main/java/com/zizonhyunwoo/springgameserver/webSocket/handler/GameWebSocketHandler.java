@@ -75,7 +75,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                         throw new IllegalArgumentException("Unrecognized message type: " + gameMessage);
                     }
                 }
-                propagate(session, roomId, payload);
+                propagate(roomId, payload);
                 // 비즈니스 로직 수행
                 gameService.handleRequest(gameMessage);
 
@@ -88,7 +88,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
         });
     }
 
-    private void propagate(WebSocketSession session, String roomId, String payload) throws IOException {
+    private void propagate(String roomId, String payload) throws IOException {
         // 전파
         Set<WebSocketSession> room = roomSessions.get(roomId);
         if (room == null) return;
