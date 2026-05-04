@@ -14,6 +14,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.exc.InvalidFormatException;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,13 +49,15 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
             try {
                 // 가공
                 String payload = message.getPayload();
-                log.info("Received text message: {}", payload);
                 IGameMessage gameMessage = objectMapper.readValue(message.getPayload(), IGameMessage.class);
                 String roomId = gameMessage.roomId();
 
                 switch (gameMessage){
                     case GameMessage.Enter enter-> {
-
+                        WebSocketSession curSession = (WebSocketSession) session.getAttributes().get("safeSession");
+                        roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(curSession);
+                        session.getAttributes().put("roomId", roomId);
+                        session.getAttributes().put("playerId", enter.playerId());
                     }
                     case GameMessage.Leave leave-> {
 
@@ -68,26 +72,12 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
 
                     }
                     default -> {
-
+                        throw new IllegalArgumentException("Unrecognized message type: " + gameMessage);
                     }
                 }
-                // 세션 정보 확인
-                if (gameMessage.messageType() == IGameMessage.MessageType.ENTER) {
-                    WebSocketSession safeSession = (WebSocketSession) session.getAttributes().get("safeSession");
-                    roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(safeSession);
-                    session.getAttributes().put("roomId", roomId);
-                    session.getAttributes().put("playerId", gameMessage.playerId());
-                }
+                propagate(session, roomId, payload);
                 // 비즈니스 로직 수행
                 gameService.handleRequest(gameMessage);
-                // 전파
-                Set<WebSocketSession> room = roomSessions.get(roomId);
-                if (room == null) return;
-                for (WebSocketSession s : room)
-                    if (s.isOpen() && !s.getId().equals(session.getId())) {
-                        System.out.println("Sending text message");
-                        s.sendMessage(new TextMessage(payload));
-                    }
 
             }catch (InvalidFormatException e){
                 log.warn("Invalid message received: {}", e.getMessage());
@@ -96,6 +86,19 @@ public class GameWebSocketHandler extends TextWebSocketHandler {
                 log.error("Error sending message", e);
             }
         });
+    }
+
+    private void propagate(WebSocketSession session, String roomId, String payload) throws IOException {
+        // 전파
+        Set<WebSocketSession> room = roomSessions.get(roomId);
+        if (room == null) return;
+        for (WebSocketSession s : room)
+            if (s.isOpen()
+//                    && !s.getId().equals(session.getId())
+            ) {
+                System.out.println("Sending text message");
+                s.sendMessage(new TextMessage(payload));
+            }
     }
 
     @Override
